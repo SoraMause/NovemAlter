@@ -21,7 +21,6 @@ void log_init( void )
     logger.trans_vel[i] = 0;
     //logger.rotation_ideal[i] = 0;
     //logger.rotation_vel[i] = 0;
-    //logger.rotation_vel[i] = 0;
     //logger.batt_data[i] = 0;
   }
 }
@@ -52,7 +51,7 @@ void showLog( void )
   printf( "sen l, sen r, ideal vel, real vel, ideal_dis\r\n");
   for ( int i  = 0; i < log_count; i++ ){
     printf( "%d,%d,%d,%d,%f\r\n",logger.sensor_left[i], logger.sensor_right[i],
-            logger.trans_ideal_vel[i], logger.trans_vel[i],logger.trans_dis[i] );
+            logger.trans_ideal_vel[i], logger.trans_vel[i], logger.trans_dis[i] );
   }
 }
 

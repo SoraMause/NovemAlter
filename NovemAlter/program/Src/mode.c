@@ -32,7 +32,6 @@ void modeSelect( int8_t mode )
 {
 
   mode_init();
-  log_init();
 
   switch( mode ){
     case 0:
@@ -126,6 +125,7 @@ void mode_init( void )
 void startAction( void )
 {
   while( getPushsw() == 0 );
+  log_init();
   buzzerSetMonophonic( A_SCALE, 200 );
   HAL_Delay( 300 );
   fullColorLedOut( LED_MAGENTA );
@@ -210,6 +210,7 @@ void mode2( void )
 {
 
   int8_t speed_count = 0;
+  int8_t _straight = 0;
 
   loadWallData( &wall_data );
   positionReset( &mypos );
@@ -219,7 +220,7 @@ void mode2( void )
     if ( mode_distance > 30.0f ){
       speed_count++;
       mode_distance = 0.0f;
-      if ( speed_count > 1 ) speed_count = 0;
+      if ( speed_count > 3 ) speed_count = 0;
       buzzermodeSelect( speed_count );
       waitMotion( 300 );
     }
@@ -227,7 +228,7 @@ void mode2( void )
     if ( mode_distance < -30.0f ){
       speed_count--;
       mode_distance = 0.0f;
-      if ( mode_counter < 0 ) speed_count = 1;
+      if ( mode_counter < 0 ) speed_count = 3;
       buzzermodeSelect( speed_count );
       waitMotion( 300 );
     }
@@ -252,9 +253,25 @@ void mode2( void )
     setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
     setPIDGain( &rotation_gain, 0.50f, 50.0f, 0.0f );
     setSenDiffValue( 30 ); 
+  } else if ( speed_count == 2 ){
+    speed_count = PARAM_1400;
+    setNormalRunParam( &run_param, 18000.0f, 1000.0f );       // 加速度、速度指定
+    setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
+    setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
+    setPIDGain( &rotation_gain, 0.50f, 50.0f, 0.0f );
+    setSenDiffValue( 30 ); 
+    _straight = 1;
+  } else if ( speed_count == 3 ){
+    speed_count = PARAM_1600;
+    setNormalRunParam( &run_param, 20000.0f, 1000.0f );       // 加速度、速度指定
+    setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
+    setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
+    setPIDGain( &rotation_gain, 0.50f, 50.0f, 0.0f );
+    setSenDiffValue( 40 ); 
   }
   
-  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, speed_count, 0 ) == 0 ){
+  
+  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, _straight, speed_count, 0 ) == 0 ){
     return;
   }
 
@@ -264,13 +281,18 @@ void mode2( void )
     adachiFastRunDiagonal1000( &run_param, &rotation_param );
   } else if ( speed_count == PARAM_1400 ) {
     adachiFastRunDiagonal1400( &run_param, &rotation_param );
+  } else if ( speed_count == PARAM_1600 ){
+    adachiFastRunDiagonal1600( &run_param, &rotation_param );
   }
 
   // debug 
   fullColorLedOut( 0x0f );
+  certainLedOut( 0x00 );
   waitMotion( 2000 );
   fullColorLedOut( 0x00 );
-  while( getPushsw() == 0 );
+  while( getPushsw() == 0 ){
+    printf( "log_wait\r");
+  }
   showLog();  
 
 }
@@ -332,6 +354,30 @@ void mode4( void )
 // 重ね探索
 void mode5( void )
 {
+  setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f ); 
+  startAction();
+  setControlFlag( 0 );
+  setLogFlag( 0 );
+  funControl( FUN_ON );
+  waitMotion( 1000 );
+  setLogFlag( 1 );
+  setControlFlag( 1 );
+  
+  sidewall_control_flag = 1;
+  setStraight( 40.0f, 20000.0f, 1200.0f, 0.0f, 1200.0f );
+  waitStraight();
+  sidewall_control_flag = 1;
+  setStraight( 180.0f, 20000.0f, 1600.0f, 1600.0f, 1600.0f );
+  waitStraight();
+
+
+  setStraight( 180.0f, 20000.0f, 1600.0f, 1600.0f, 0.0f );
+  waitStraight();
+
+  funControl( FUN_OFF );
+  setControlFlag( 0 );
+  while( getPushsw() == 0 );
+  showLog();  
 
 }
 
@@ -369,6 +415,7 @@ void mode7( void )
 // 直進、回転組み合わせチェック 超進地旋回
 void mode8( void )
 {
+  showLog();
   buzzerSetMonophonic( NORMAL, 200 );
   HAL_Delay(300); 
   startAction();
