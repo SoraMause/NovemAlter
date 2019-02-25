@@ -247,6 +247,7 @@ void mode2( void )
     setPIDGain( &translation_gain, 2.0f, 40.0f, 0.0f );
     setSenDiffValue( 15 );
   } else if ( speed_count == 1 ){
+    setFunDuty( 40 );
     speed_count = PARAM_1400;
     setNormalRunParam( &run_param, 18000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
@@ -255,6 +256,7 @@ void mode2( void )
     setSenDiffValue( 30 ); 
   } else if ( speed_count == 2 ){
     speed_count = PARAM_1400;
+    setFunDuty( 40 );
     setNormalRunParam( &run_param, 18000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
     setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
@@ -263,10 +265,11 @@ void mode2( void )
     _straight = 1;
   } else if ( speed_count == 3 ){
     speed_count = PARAM_1600;
+    setFunDuty( 40 );
     setNormalRunParam( &run_param, 20000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
     setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
-    setPIDGain( &rotation_gain, 0.50f, 50.0f, 0.0f );
+    setPIDGain( &rotation_gain, 0.50f, 60.0f, 0.0f );
     setSenDiffValue( 40 ); 
   }
   
@@ -415,7 +418,6 @@ void mode7( void )
 // 直進、回転組み合わせチェック 超進地旋回
 void mode8( void )
 {
-  showLog();
   buzzerSetMonophonic( NORMAL, 200 );
   HAL_Delay(300); 
   startAction();
