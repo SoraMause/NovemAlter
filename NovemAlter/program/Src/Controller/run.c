@@ -155,7 +155,7 @@ void waitSlaromOut( void )
 
 
   if ( sen_front.is_wall == 1 ){
-    while( sen_front.now < 220 );
+    while( sen_front.now < 230 );
   }
 
   // reset ideal data

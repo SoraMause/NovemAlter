@@ -90,6 +90,7 @@ void sideWallControl( void )
   // sidewall_control_valueをいじる
   // kp については無理やり角速度になおせるような値を求める。
   // 横壁制御フラグが1のときのみ制御を行う
+  
   float sen_error = 0.0f;
 
   if ( sidewall_control_flag == 1 && (sen_l.diff < diff_value) && (sen_r.diff < diff_value) && (translation_ideal.velocity > 300.0f) ){
@@ -126,11 +127,11 @@ void sideWallControl( void )
     // 2019 1/25 fl: , l: , fr: , r:
     if ( sen_fl.now > 120 && sen_fl.diff < 100 ){
       sidewall_control_value = (float)0.6f * ( sen_fl.now - 80 );
-    } else if ( sen_l.now > 700 && sen_l.diff_1ms < 100 ){
+    } else if ( sen_l.now > 690 && sen_l.diff_1ms < 100 ){
       sidewall_control_value = (float)0.6f * ( sen_l.now - 660 );
     } else if ( sen_fr.now > 110 && sen_fr.diff < 100 ){
       sidewall_control_value = (float)-0.6f * ( sen_fr.now - 70 );
-    } else if ( sen_r.now > 700 && sen_r.diff_1ms < 100 ){
+    } else if ( sen_r.now > 690 && sen_r.diff_1ms < 100 ){
       sidewall_control_value = (float)-0.6f * ( sen_r.now - 660 );
     }
   } else {

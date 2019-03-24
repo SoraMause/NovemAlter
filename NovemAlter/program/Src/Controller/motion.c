@@ -248,7 +248,7 @@ void slaromCenterRight135( float accel )
 // 斜め90度 ( V90 )
 void slaromLeftV90( void )
 {
-  sidewall_control_flag = 1;
+  dirwall_control_flag = 1;
   while( sen_l.now > sen_l.threshold && translation_ideal.distance < 15.0f );
   if ( translation_ideal.distance < 10.0f ){
     translation_ideal.distance = 8.0f;
@@ -264,7 +264,7 @@ void slaromLeftV90( void )
 
 void slaromRightV90( void )
 {
-  sidewall_control_flag = 1;
+  dirwall_control_flag = 1;
   while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
   if ( translation_ideal.distance < 10.0f ){
     translation_ideal.distance = 8.0f;
@@ -281,7 +281,7 @@ void slaromRightV90( void )
 // 斜めから復帰
 void slaromReturnDiaLeft45( void )
 {
-  sidewall_control_flag = 1;
+  dirwall_control_flag = 1;
   while( sen_l.now > sen_l.threshold && translation_ideal.distance < 15.0f );
   if ( translation_ideal.distance < 15.0f ){
     translation_ideal.distance = 8.0f;
@@ -297,7 +297,7 @@ void slaromReturnDiaLeft45( void )
 
 void slaromReturnDiaRight45( void )
 {
-  sidewall_control_flag = 1;
+  dirwall_control_flag = 1;
   while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
   if ( translation_ideal.distance < 15.0f ){
     translation_ideal.distance = 8.0f;
@@ -314,7 +314,7 @@ void slaromReturnDiaRight45( void )
 // 斜めから135度ターン復帰
 void slaromReturnDiaLeft135( void )
 {
-  sidewall_control_flag = 1;
+  dirwall_control_flag = 1;
   while( sen_l.now > sen_l.threshold && translation_ideal.distance < 15.0f );
   setStraight( 28.0f, 0.0, 1600.0f, 1600.0f, 1600.0f );
   waitStraight();
@@ -327,7 +327,7 @@ void slaromReturnDiaLeft135( void )
 
 void slaromReturnDiaRight135( void )
 {
-  sidewall_control_flag = 1;
+  dirwall_control_flag = 1;
   while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
   setStraight( 28.0f, 0.0, 1600.0f, 1600.0f, 1600.0f );
   waitStraight();
