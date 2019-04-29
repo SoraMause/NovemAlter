@@ -24,8 +24,8 @@
 #include "mazeRun.h"
 
 // ゴール座標の設定
-static uint8_t goal_x = 6;
-static uint8_t goal_y = 4;
+static uint8_t goal_x = 1;
+static uint8_t goal_y = 0;
 static uint8_t maze_goal_size = 1;
 
 void modeSelect( int8_t mode )
@@ -222,7 +222,7 @@ void mode2( void )
     if ( mode_distance > 30.0f ){
       speed_count++;
       mode_distance = 0.0f;
-      if ( speed_count > 6 ) speed_count = 0;
+      if ( speed_count > 7 ) speed_count = 0;
       buzzermodeSelect( speed_count );
       waitMotion( 300 );
     }
@@ -230,7 +230,7 @@ void mode2( void )
     if ( mode_distance < -30.0f ){
       speed_count--;
       mode_distance = 0.0f;
-      if ( speed_count < 0 ) speed_count = 6;
+      if ( speed_count < 0 ) speed_count = 7;
       buzzermodeSelect( speed_count );
       waitMotion( 300 );
     }
@@ -293,6 +293,14 @@ void mode2( void )
     setPIDGain( &rotation_gain, 0.57f, 60.0f, 0.0f );
     setSenDiffValue( 150 ); 
     _straight = 1;
+  } else if ( speed_count == 7 ){
+    speed_count = MAX_PARAM;
+    setNormalRunParam( &run_param, 22000.0f, 1000.0f );       // 加速度、速度指定
+    setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
+    setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
+    setPIDGain( &rotation_gain, 0.60f, 60.0f, 0.0f );
+    setSenDiffValue( 180 ); 
+    _straight = 1;
   } 
   
   
@@ -308,9 +316,11 @@ void mode2( void )
     adachiFastRunDiagonal1400( &run_param, &rotation_param );
   } else if ( speed_count == PARAM_1600 ){
     adachiFastRunDiagonal1600( &run_param, &rotation_param );
-  }  else if ( speed_count == PARAM_1700 ){
+  } else if ( speed_count == PARAM_1700 ){
     adachiFastRunDiagonal1700( &run_param, &rotation_param );
-  }
+  } else if ( speed_count == MAX_PARAM ){
+    adachiFastRunDiagonalMax( &run_param, &rotation_param );
+  } 
 
   // debug 
   fullColorLedOut( 0x0f );
