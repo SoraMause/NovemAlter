@@ -24,8 +24,8 @@
 #include "mazeRun.h"
 
 // ゴール座標の設定
-static uint8_t goal_x = 1;
-static uint8_t goal_y = 0;
+static uint8_t goal_x = 6;
+static uint8_t goal_y = 4;
 static uint8_t maze_goal_size = 1;
 
 void modeSelect( int8_t mode )
@@ -108,8 +108,10 @@ void mode_init( void )
   // sensor 値設定
   setSensorConstant( &sen_front, 650, 140 );
   // 区画中心　前壁 195
-  setSensorConstant( &sen_l, 390, 155 );
-  setSensorConstant( &sen_r, 275, 135 );
+  //setSensorConstant( &sen_l, 390, 155 );
+  //setSensorConstant( &sen_r, 275, 135 );
+  setSensorConstant( &sen_l, 390, 175 );
+  setSensorConstant( &sen_r, 275, 155 );
 
   certainLedOut( LED_LEFT );
   waitMotion( 100 );
@@ -251,14 +253,14 @@ void mode2( void )
     setNormalRunParam( &run_param, 18000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
     setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
-    setPIDGain( &rotation_gain, 0.50f, 50.0f, 0.0f );
+    setPIDGain( &rotation_gain, 0.55f, 60.0f, 0.0f );
     setSenDiffValue( 35 ); 
   } else if ( speed_count == 2 ){
     speed_count = PARAM_1400;
     setNormalRunParam( &run_param, 18000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
     setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
-    setPIDGain( &rotation_gain, 0.50f, 50.0f, 0.0f );
+    setPIDGain( &rotation_gain, 0.55f, 60.0f, 0.0f );
     setSenDiffValue( 35 ); 
     _straight = 1;
   } else if ( speed_count == 3 ){
@@ -266,14 +268,14 @@ void mode2( void )
     setNormalRunParam( &run_param, 20000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
     setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
-    setPIDGain( &rotation_gain, 0.50f, 60.0f, 0.0f );
+    setPIDGain( &rotation_gain, 0.56f, 60.0f, 0.0f );
     setSenDiffValue( 45 ); 
   } else if ( speed_count == 4 ){
     speed_count = PARAM_1600;
     setNormalRunParam( &run_param, 20000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
     setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
-    setPIDGain( &rotation_gain, 0.50f, 60.0f, 0.0f );
+    setPIDGain( &rotation_gain, 0.56f, 60.0f, 0.0f );
     setSenDiffValue( 45 ); 
     _straight = 1;
   } else if ( speed_count == 5 ){
@@ -281,14 +283,14 @@ void mode2( void )
     setNormalRunParam( &run_param, 22000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
     setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
-    setPIDGain( &rotation_gain, 0.50f, 60.0f, 0.0f );
+    setPIDGain( &rotation_gain, 0.57f, 60.0f, 0.0f );
     setSenDiffValue( 150 ); 
   } else if ( speed_count == 6 ){
     speed_count = PARAM_1700;
     setNormalRunParam( &run_param, 22000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
     setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f );  
-    setPIDGain( &rotation_gain, 0.50f, 60.0f, 0.0f );
+    setPIDGain( &rotation_gain, 0.57f, 60.0f, 0.0f );
     setSenDiffValue( 150 ); 
     _straight = 1;
   } 
@@ -379,246 +381,7 @@ void mode4( void )
 // 重ね探索
 void mode5( void )
 {
-  setPIDGain( &translation_gain, 2.6f, 45.0f, 0.0f ); 
-  setPIDGain( &rotation_gain, 0.50f, 60.0f, 0.0f );
-  setSenDiffValue( 60 ); 
-  startAction();
-  setControlFlag( 0 );
-  setLogFlag( 0 );
-  funControl( FUN_ON );
-  waitMotion( 1000 );
-  setLogFlag( 1 );
-  setControlFlag( 1 );
-  
-  sidewall_control_flag = 1;
-  setStraight( 220.0f, 20000.0f, 1700.0f, 0.0f, 1700.0f );
-  waitStraight();
-  // 一回目
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 13.0f, 20000.0f, 4400.0f, 1200.0f, 1700.0f );
-  waitStraight();
 
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 5.0f, 20000.0f, 3000.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 13.0f, 20000.0f, 4500.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 5.0f, 20000.0f, 3000.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  // 一回目
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 13.0f, 20000.0f, 4500.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 5.0f, 20000.0f, 3000.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 13.0f, 20000.0f, 4500.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 5.0f, 20000.0f, 3000.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  // 一回目
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 13.0f, 20000.0f, 4500.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 5.0f, 20000.0f, 3000.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 13.0f, 20000.0f, 4500.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  sidewall_control_flag = 1;
-  setStraight( ONE_BLOCK_DISTANCE * 5.0f, 20000.0f, 3000.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  fullColorLedOut( 0x02 );
-  sidewall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
-  if ( translation_ideal.distance < 15.0 ) {
-    translation_ideal.distance = 6.8f;
-  }
-  setStraight( 27.0f, 20000.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-  setRotation( -90.0f, 20000.0f, 900.0f, 1700.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 34.0f, 0.0f, 1700.0f, 1700.0f, 1700.0f );
-  waitStraight();
-
-  setStraight( 180.0f, 20000.0f, 1700.0f, 1700.0f, 0.0f );
-  waitStraight();
-
-  funControl( FUN_OFF );
-  setControlFlag( 0 );
-  while( getPushsw() == 0 );
-  showLog();  
 
 }
 

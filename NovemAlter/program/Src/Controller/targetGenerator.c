@@ -61,8 +61,8 @@ void PIDControl( t_run *ideal, t_run *left, t_run *right, t_deviation *left_devi
   left_i = left_deviation->cumulative * ki;
   right_i = right_deviation->cumulative * ki;
 
-  left_d = ( left_error - left_deviation->difference ) / dt * kd;
-  right_d = ( right_error - right_deviation->difference ) / dt * kd;
+  left_d = ( left_error - left_deviation->difference ) * kd;
+  right_d = ( right_error - right_deviation->difference ) * kd;
 
   // 一つ前の値を計算( 微分用 )
   left_deviation->difference = left_error;

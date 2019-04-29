@@ -152,6 +152,19 @@ void adcCheckConvert( void )
       adc_counter = 0;
       HAL_ADC_Start_DMA( &hadc1, (uint32_t *)ADCBuff, sizeof(ADCBuff) );
     }
+
+    if ( ctr_irled == 1 ){
+      if ( sen_l.is_wall == 1 && sen_r.is_wall == 1 ){
+        certainLedOut( LED_BOTH );
+      } else if ( sen_l.is_wall == 1 ){
+        certainLedOut( LED_LEFT );
+      } else if ( sen_r.is_wall == 1 ){
+        certainLedOut( LED_RIGHT );
+      } else {
+        certainLedOut( LED_OFF );
+      }
+    }
+
   }
 }
 

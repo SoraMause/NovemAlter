@@ -407,19 +407,19 @@ void funControl( uint8_t fun_mode )
   int32_t pwm = 0;
 
   if ( fun_mode == FUN_ON ) {
-    pwm = 35;
+    pwm = 30;
   }
 
-  if ( buzzer_period_buff != 15 ){
+  if ( buzzer_period_buff != 31 ){
     htim2.Instance = TIM2;
-    htim2.Init.Prescaler = 15;
+    htim2.Init.Prescaler = 31;
     htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
     htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
     if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
     {
       Error_Handler();
     }
-    buzzer_period_buff = 15;
+    buzzer_period_buff = 31;
   } 
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;

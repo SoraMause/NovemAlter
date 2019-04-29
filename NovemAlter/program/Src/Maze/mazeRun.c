@@ -457,7 +457,7 @@ void adachiFastRunDiagonal1400( t_normal_param *translation, t_normal_param *rot
   setLogFlag( 0 );
   waitMotion( 1000 );
   funControl( FUN_ON );
-  waitMotion( 1000 );
+  waitMotion( 1500 );
   setLogFlag( 1 );
   setControlFlag( 1 );
   
@@ -744,7 +744,7 @@ void adachiFastRunDiagonal1600( t_normal_param *translation, t_normal_param *rot
   setLogFlag( 0 );
   waitMotion( 1000 );
   funControl( FUN_ON );
-  waitMotion( 1000 );
+  waitMotion( 1500 );
   setLogFlag( 1 );
   setControlFlag( 1 );
   
@@ -880,7 +880,7 @@ void adachiFastRunDiagonal1700( t_normal_param *translation, t_normal_param *rot
   setLogFlag( 0 );
   waitMotion( 1000 );
   funControl( FUN_ON );
-  waitMotion( 1000 );
+  waitMotion( 1500 );
   setLogFlag( 1 );
   setControlFlag( 1 );
   

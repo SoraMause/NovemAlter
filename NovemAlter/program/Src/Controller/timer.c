@@ -97,16 +97,6 @@ void interrupt( void )
     duty.left = 0;
     duty.right = 0;
 
-    if ( sen_l.is_wall == 1 && sen_r.is_wall == 1 ){
-      certainLedOut( LED_BOTH );
-    } else if ( sen_l.is_wall == 1 ){
-      certainLedOut( LED_LEFT );
-    } else if ( sen_r.is_wall == 1 ){
-      certainLedOut( LED_RIGHT );
-    } else {
-      certainLedOut( LED_OFF );
-    }
-
   } else {
     motorControl( 0, 0 );
     if ( !(mode_counter & 0x80) ) {
