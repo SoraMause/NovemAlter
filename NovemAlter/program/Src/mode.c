@@ -24,8 +24,8 @@
 #include "mazeRun.h"
 
 // ゴール座標の設定
-static uint8_t goal_x = 1;
-static uint8_t goal_y = 0;
+static uint8_t goal_x = 7;
+static uint8_t goal_y = 7;
 static uint8_t maze_goal_size = 1;
 
 void modeSelect( int8_t mode )
@@ -348,7 +348,7 @@ void mode3( void )
   adcEnd();
   if ( wall_data.save == 1 ){
     //agentSetShortRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 1, 0 );
-    agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, PARAM_1000, 1 );
+    agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, MAX_PARAM, 1 );
   }
   
 }

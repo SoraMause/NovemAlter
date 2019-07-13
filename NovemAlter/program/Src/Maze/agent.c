@@ -1277,6 +1277,9 @@ void setFastPathParameterMax( int8_t motion_buff[256], int8_t motion_data[256], 
         // 復帰の場合は速度を1700にする
         fast_path[i].speed = 1700.0f;
         fast_path[i].end_speed = 1700.0f;
+      } else {
+        fast_path[i].speed = 1700.0f;
+        fast_path[i].end_speed = 1700.0f;
       }
     } else if ( motion_queue[i] == SET_DIA_STRAIGHT ){
       fast_path[i].distance = motion_data[i] * SLATING_ONE_BLOCK_DISTANCE;
